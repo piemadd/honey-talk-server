@@ -137,6 +137,8 @@ fastify.post('/send-notif', async (request, reply) => {
     return reply.send({ success: true });
   };
 
+  const dataToSend = request.headers.payload;
+
   const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
 
   usernamesToSendTo.forEach((username) => {
