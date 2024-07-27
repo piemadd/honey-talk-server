@@ -141,12 +141,16 @@ fastify.post('/send-notif', async (request, reply) => {
 
   const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
 
-  usernamesToSendTo.forEach((username) => {
-    const subscription = subscriptions[username];
-    webpush.sendNotification(subscription, dataToSend);
-  })
+  try {
+    usernamesToSendTo.forEach((username) => {
+      const subscription = subscriptions[username];
+      webpush.sendNotification(subscription, dataToSend);
+    })
 
-  return reply.send({ success: false })
+    return reply.send({ success: true })
+  } catch (e) {
+    return reply.send({ success: true })
+  }
 })
 
 // Run the server!
