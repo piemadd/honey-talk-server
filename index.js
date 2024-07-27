@@ -13,6 +13,7 @@ fastify.register(require('@fastify/cookie'), {
   parseOptions: {
     expires: new Date("2999-12-31T12:00:00.000Z"),
     sameSite: 'none',
+    secure: true
     path: '/'
   }
 })
@@ -40,6 +41,7 @@ const setupAuth = (username) => {
 }
 
 const checkAuth = (username, token) => {
+  if (username == undefined || token == undefined) return false;
   if (userTokens[username] == hashPassword[token]) return true;
   return false;
 }
@@ -112,8 +114,6 @@ fastify.get('/callback-twitter', async (request, reply) => {
 
 fastify.post('/save-subscription', async (request, reply) => {
   const subscription = request.body;
-
-  console.log(request.cookies)
 
   if (checkAuth(request.cookies.username, request.cookies.token)) {
     subscriptions[request.headers.cookies] = subscription;
