@@ -41,8 +41,15 @@ const setupAuth = (username) => {
 }
 
 const checkAuth = (username, token) => {
-  if (username == undefined || token == undefined) return false;
-  if (userTokens[username] == hashPassword[token]) return true;
+  if (username == undefined || token == undefined) {
+    console.log('auth fail:', username, token)
+    return false;
+  }
+  if (userTokens[username] == hashPassword(token)) {
+    console.log('auth pass:', username, token)
+    return true;
+  }
+  console.log('auth fail:', username, token)
   return false;
 }
 
