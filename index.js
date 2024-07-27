@@ -134,11 +134,11 @@ fastify.post('/save-subscription', async (request, reply) => {
 
 fastify.post('/send-notif', async (request, reply) => {
   if (!checkAuth(request.cookies.username, request.cookies.userToken)) {
-    return reply.send({ success: true });
+    return reply.send({ success: false, message: 'auth fail' });
   };
 
   try {
-    const dataToSend = JSON.parse(request.body).payload;
+    const dataToSend = JSON.parse(request.body).payload ?? 'no payload';
 
     console.log('tobe', Object.keys(subscriptions))
     const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
