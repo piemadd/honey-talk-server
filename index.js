@@ -17,6 +17,11 @@ fastify.register(require('@fastify/cookie'), {
   }
 })
 
+fastify.register(require('@fastify/cors'), {
+  origin: process.env.CLIENT_URL,
+  credentials: true
+})
+
 const twitterClient = new TwitterApi({
   appKey: process.env.TWITTER_KEY,
   appSecret: process.env.TWITTER_KEY_SECRET
@@ -53,10 +58,7 @@ fastify.get('/', (request, reply) => {
 
 fastify.get('/ping', async (request, reply) => {
   console.log(request.cookies)
-  reply
-    .header('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-    .header('Access-Control-Allow-Credentials', 'true')
-    .send(JSON.stringify(request.cookies))
+  reply.send(JSON.stringify(request.cookies))
 })
 
 fastify.get('/login-twitter', async (request, reply) => {
@@ -107,25 +109,16 @@ fastify.post('/save-subscription', async (request, reply) => {
   if (checkAuth(request.cookies.username, request.cookies.token)) {
     subscriptions[request.headers.cookies] = subscription;
     console.log('Sub save pass')
-    return reply
-      .header('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-      .header('Access-Control-Allow-Credentials', 'true')
-      .send({ success: true });
+    return reply.send({ success: true });
   };
 
   console.log('Sub save fail')
-  return reply
-    .header('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-    .header('Access-Control-Allow-Credentials', 'true')
-    .send({ success: false })
+  return reply.send({ success: false })
 })
 
 fastify.post('/send-notif', async (request, reply) => {
   if (!checkAuth(request.cookies.username, request.cookies.token)) {
-    return reply
-      .header('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-      .header('Access-Control-Allow-Credentials', 'true')
-      .send({ success: true });
+    return reply.send({ success: true });
   };
 
   const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
@@ -135,10 +128,7 @@ fastify.post('/send-notif', async (request, reply) => {
     webpush.sendNotification(subscription, dataToSend);
   })
 
-  return reply
-    .header('Access-Control-Allow-Origin', process.env.CLIENT_URL)
-    .header('Access-Control-Allow-Credentials', 'true')
-    .send({ success: false })
+  return reply.send({ success: false })
 })
 
 // Run the server!
