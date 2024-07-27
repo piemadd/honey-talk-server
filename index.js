@@ -115,8 +115,8 @@ fastify.get('/callback-twitter', async (request, reply) => {
 fastify.post('/save-subscription', async (request, reply) => {
   const subscription = request.body;
 
-  if (checkAuth(request.cookies.username, request.cookies.token)) {
-    subscriptions[request.headers.cookies] = subscription;
+  if (checkAuth(request.cookies.username, request.cookies.userToken)) {
+    subscriptions[request.cookies.username] = subscription;
     console.log('Sub save pass')
     return reply.send({ success: true });
   };
@@ -126,7 +126,7 @@ fastify.post('/save-subscription', async (request, reply) => {
 })
 
 fastify.post('/send-notif', async (request, reply) => {
-  if (!checkAuth(request.cookies.username, request.cookies.token)) {
+  if (!checkAuth(request.cookies.username, request.cookies.userToken)) {
     return reply.send({ success: true });
   };
 
