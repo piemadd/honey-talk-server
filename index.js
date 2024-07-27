@@ -13,7 +13,7 @@ fastify.register(require('@fastify/cookie'), {
   parseOptions: {
     expires: new Date("2999-12-31T12:00:00.000Z"),
     sameSite: 'none',
-    secure: true
+    secure: true,
     path: '/'
   }
 })
