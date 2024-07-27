@@ -137,11 +137,10 @@ fastify.post('/send-notif', async (request, reply) => {
     return reply.send({ success: true });
   };
 
-  const dataToSend = request.headers.payload;
-
-  const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
-
   try {
+    const dataToSend = JSON.parse(request.body).payload;
+
+    const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
     usernamesToSendTo.forEach((username) => {
       const subscription = subscriptions[username];
       webpush.sendNotification(subscription, dataToSend);
@@ -149,6 +148,7 @@ fastify.post('/send-notif', async (request, reply) => {
 
     return reply.send({ success: true })
   } catch (e) {
+    console.log(e)
     return reply.send({ success: true })
   }
 })
