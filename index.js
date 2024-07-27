@@ -140,10 +140,13 @@ fastify.post('/send-notif', async (request, reply) => {
   try {
     const dataToSend = JSON.parse(request.body).payload;
 
+    console.log('tobe', Object.keys(subscriptions))
     const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
+    console.log('toaf', usernamesToSendTo)
     usernamesToSendTo.forEach((username) => {
       const subscription = subscriptions[username];
       webpush.sendNotification(subscription, dataToSend);
+      console.log('sent to', username)
     })
 
     return reply.send({ success: true })
