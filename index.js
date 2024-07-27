@@ -56,6 +56,13 @@ fastify.get('/', (request, reply) => {
   reply.redirect(process.env.CLIENT_URL);
 })
 
+fastify.get('/debug', (request, reply) => {
+  reply.send({
+    userTokens,
+    subscriptions
+  });
+})
+
 fastify.get('/ping', async (request, reply) => {
   console.log(request.cookies)
   reply.send(JSON.stringify(request.cookies))
@@ -105,6 +112,8 @@ fastify.get('/callback-twitter', async (request, reply) => {
 
 fastify.post('/save-subscription', async (request, reply) => {
   const subscription = request.body;
+
+  console.log(request.cookies)
 
   if (checkAuth(request.cookies.username, request.cookies.token)) {
     subscriptions[request.headers.cookies] = subscription;
