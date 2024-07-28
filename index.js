@@ -117,7 +117,7 @@ fastify.get('/callback-twitter', async (request, reply) => {
       .setCookie('username', user.screen_name)
       .setCookie('name', user.name)
       .setCookie('userToken', userToken)
-      .redirect(`${process.env.CLIENT_URL}/callback?username=${encodeURI(user.screen_name)}&name=${encodeURI(user.name)}&token=${encodeURI(userToken)}`)
+      .redirect(`${process.env.CLIENT_URL}/callback?username=${encodeURI(user.screen_name)}&name=${encodeURI(user.name)}&userToken=${encodeURI(userToken)}`)
   } catch (e) {
     reply.status(403).send('Twitter Authentication Error: Invalid verifier or access tokens.')
   }
