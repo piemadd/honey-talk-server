@@ -141,7 +141,7 @@ fastify.get('/callback-manual', async (request, reply) => {
     return reply.status(400).send('Your username and/or password could not be parsed.');
   }
 
-  console.log(`Redirecting ${user.screen_name} to client`);
+  console.log(`Redirecting ${username} to client`);
   reply
     .setCookie('username', username)
     .setCookie('userToken', userToken)
