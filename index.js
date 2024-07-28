@@ -34,9 +34,19 @@ let oauthTokens = {};
 let userTokens = {};
 let subscriptions = {};
 
+Object.keys(process.env).filter((token) => {
+  if (token.startsWith('USER_')) return true;
+  return false;
+}).forEach((token) => {
+  userTokens[token.replace('USER_', '').toLowerCase()] = process.env[token];
+})
+
 const setupAuth = (username) => {
   const token = uuidv4();
-  userTokens[username] = hashPassword(token);
+  const hashed = hashPassword(token);
+  console.log(`new token ${token} for ${username}`)
+  console.log(`new hash ${hashed} for ${username}`)
+  userTokens[username] = hashed;
   return token;
 }
 
