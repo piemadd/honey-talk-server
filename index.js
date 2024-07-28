@@ -77,6 +77,10 @@ fastify.get('/ping', async (request, reply) => {
   reply.send(JSON.stringify(request.cookies))
 })
 
+fastify.get('/uuid', async (request, reply) => {
+  reply.send(uuidv4())
+})
+
 fastify.get('/login-twitter', async (request, reply) => {
   const res = await twitterClient.generateAuthLink(`${process.env.SERVER_URL}/callback-twitter`)
   oauthTokens[`twitter_${res.oauth_token}`] = res.oauth_token_secret;
