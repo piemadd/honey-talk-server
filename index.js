@@ -133,6 +133,21 @@ fastify.get('/callback-twitter', async (request, reply) => {
   }
 })
 
+fastify.get('/callback-manual', async (request, reply) => {
+  const { username, userToken } = request.query;
+
+  if (!username || !userToken) {
+    console.log('Failed user login, request denied')
+    return reply.status(400).send('Your username and/or password could not be parsed.');
+  }
+
+  console.log(`Redirecting ${user.screen_name} to client`);
+  reply
+    .setCookie('username', username)
+    .setCookie('userToken', userToken)
+    .redirect(process.env.CLIENT_URL)
+})
+
 fastify.post('/save-subscription', async (request, reply) => {
   const subscription = request.body;
 
