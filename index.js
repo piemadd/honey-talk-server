@@ -104,7 +104,7 @@ fastify.get('/callback-twitter', async (request, reply) => {
     const { client: loggedClient, accessToken, accessSecret } = await client.login(oauth_verifier);
     const user = await loggedClient.currentUser();
 
-    if (!config.allowedUsers.includes(user.screen_name)) return reply.status(403).send('You are not on the user allow list.');
+    if (!config.allowedUsers.includes(user.screen_name.toLowerCase())) return reply.status(403).send('You are not on the user allow list.');
 
     const userToken = setupAuth(user.screen_name);
 
@@ -134,7 +134,7 @@ fastify.post('/save-subscription', async (request, reply) => {
 
 fastify.post('/send-notif', async (request, reply) => {
   if (!checkAuth(request.cookies.username, request.cookies.userToken)) {
-    return reply.send({ success: false, message: 'auth fail' });
+    return reply.send({ success: false, message: 'auth' });
   };
 
   try {
