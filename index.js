@@ -170,7 +170,7 @@ fastify.post('/send-notif', async (request, reply) => {
     const dataToSend = JSON.parse(request.body).payload ?? 'no payload';
 
     console.log('tobe', Object.keys(subscriptions))
-    const usernamesToSendTo = Object.keys(subscriptions)//.filter((n) => !n == request.cookies.username);
+    const usernamesToSendTo = Object.keys(subscriptions).filter((n) => !n == request.cookies.username);
     console.log('toaf', usernamesToSendTo)
     usernamesToSendTo.forEach((username) => {
       const subscription = subscriptions[username];
