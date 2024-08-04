@@ -188,6 +188,12 @@ fastify.get('/test-notif', async (request, reply) => {
   }
 })
 
+fastify.post('/error-report', async (request, reply) => {
+  const error = JSON.parse(request.body);
+
+  console.log(`${error.type}: ${error.text}`)
+})
+
 fastify.post('/send-notif', async (request, reply) => {
   if (!checkAuth(request.cookies.username, request.cookies.userToken)) {
     return reply.send({ success: false, message: 'auth' });
