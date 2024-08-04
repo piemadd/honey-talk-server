@@ -178,6 +178,10 @@ fastify.post('/send-notif', async (request, reply) => {
       console.log('sent to', username)
     })
 
+    if (!subscriptions[request.cookies.username]) {
+      return reply.send({ success: true, updateSW: true });
+    }
+
     return reply.send({ success: true })
   } catch (e) {
     console.log(e)
