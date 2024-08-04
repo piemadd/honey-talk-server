@@ -198,7 +198,7 @@ fastify.post('/send-notif', async (request, reply) => {
         webpush.sendNotification(subscription, dataToSend);
         console.log('sent to', username, dataToSend)
       } catch (e) {
-        console.log('Error sending notif:', e)
+        console.log('Error sending notif:', e.toString())
       }
     })
 
