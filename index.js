@@ -161,6 +161,19 @@ fastify.post('/save-subscription', async (request, reply) => {
   return reply.send({ success: false })
 })
 
+fastify.get('/test-notif', async (request, reply) => {
+  const subscription = subscriptions['piero'];
+
+  if (!subscription) return reply.send('none');
+
+  try {
+    webpush.sendNotification(subscription, dataToSend);
+    return reply.send('sent to', username, dataToSend)
+  } catch (e) {
+    return reply.send('Error sending notif:', e)
+  }
+})
+
 fastify.post('/send-notif', async (request, reply) => {
   if (!checkAuth(request.cookies.username, request.cookies.userToken)) {
     return reply.send({ success: false, message: 'auth' });
@@ -177,13 +190,13 @@ fastify.post('/send-notif', async (request, reply) => {
     const dataToSend = JSON.parse(request.body).payload ?? 'no payload';
 
     console.log('tobe', Object.keys(subscriptions))
-    const usernamesToSendTo = Object.keys(subscriptions).filter((n) => n != request.cookies.username);
+    const usernamesToSendTo = Object.keys(subscriptions)//.filter((n) => n != request.cookies.username);
     console.log('toaf', usernamesToSendTo)
     usernamesToSendTo.forEach((username) => {
       const subscription = subscriptions[username];
       try {
         webpush.sendNotification(subscription, dataToSend);
-        console.log('sent to', username)
+        console.log('sent to', username, dataToSend)
       } catch (e) {
         console.log('Error sending notif:', e)
       }
