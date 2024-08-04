@@ -179,7 +179,10 @@ fastify.post('/send-notif', async (request, reply) => {
     })
 
     if (!subscriptions[request.cookies.username]) {
+      console.log(`Telling ${request.cookies.username} to refresh the SW`)
       return reply.send({ success: true, updateSW: true });
+    } else {
+      console.log(`${request.cookies.username} has notifs registered`)
     }
 
     return reply.send({ success: true })
