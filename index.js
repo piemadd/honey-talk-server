@@ -166,6 +166,13 @@ fastify.post('/send-notif', async (request, reply) => {
     return reply.send({ success: false, message: 'auth' });
   };
 
+  if (!subscriptions[request.cookies.username]) {
+    console.log(`Telling ${request.cookies.username} to refresh the SW`)
+    return reply.send({ success: false, updateSW: true });
+  } else {
+    console.log(`${request.cookies.username} has notifs registered`)
+  }
+
   try {
     const dataToSend = JSON.parse(request.body).payload ?? 'no payload';
 
@@ -177,13 +184,6 @@ fastify.post('/send-notif', async (request, reply) => {
       webpush.sendNotification(subscription, dataToSend);
       console.log('sent to', username)
     })
-
-    if (!subscriptions[request.cookies.username]) {
-      console.log(`Telling ${request.cookies.username} to refresh the SW`)
-      return reply.send({ success: true, updateSW: true });
-    } else {
-      console.log(`${request.cookies.username} has notifs registered`)
-    }
 
     return reply.send({ success: true })
   } catch (e) {
