@@ -167,8 +167,8 @@ fastify.get('/test-notif', async (request, reply) => {
   if (!subscription) return reply.send('none');
 
   try {
-    webpush.sendNotification(subscription, dataToSend);
-    return reply.send('sent to', username, dataToSend)
+    webpush.sendNotification(subscription, 'test');
+    return reply.send('sent to', username, 'test')
   } catch (e) {
     return reply.send('Error sending notif:', e)
   }
