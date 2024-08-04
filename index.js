@@ -63,6 +63,18 @@ const checkAuth = (username, token) => {
   return false;
 }
 
+const vapidArr = [
+  'mailto:piero@piemadd.com',
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY,
+];
+
+const vapidDict = {
+  subject: vapidArr[0],
+  publicKey: vapidArr[1],
+  privateKey: vapidArr[2],
+}
+
 //setting up webpush
 webpush.setVapidDetails(
   'mailto:piero@piemadd.com',
@@ -167,7 +179,9 @@ fastify.get('/test-notif', async (request, reply) => {
   if (!subscription) return reply.send('none');
 
   try {
-    webpush.sendNotification(subscription, 'test');
+    webpush.sendNotification(subscription, 'test', {
+      vapidDetails: vapidDict,
+    });
     return reply.send('sent to', username, 'test')
   } catch (e) {
     return reply.send('Error sending notif:', e.toString())
