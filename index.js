@@ -181,8 +181,12 @@ fastify.post('/send-notif', async (request, reply) => {
     console.log('toaf', usernamesToSendTo)
     usernamesToSendTo.forEach((username) => {
       const subscription = subscriptions[username];
-      webpush.sendNotification(subscription, dataToSend);
-      console.log('sent to', username)
+      try {
+        webpush.sendNotification(subscription, dataToSend);
+        console.log('sent to', username)
+      } catch (e) {
+        console.log('Error sending notif:', e)
+      }
     })
 
     return reply.send({ success: true })
